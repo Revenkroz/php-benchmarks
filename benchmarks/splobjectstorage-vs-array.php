@@ -1,11 +1,13 @@
 <?php declare(strict_types=1);
 
-function convertToBytes($size) {
+function convertToBytes($size): string
+{
     $unit = ['b','kb','mb','gb','tb','pb'];
     return @\round($size / \pow(1024, ($i = \floor(\log($size, 1024)))), 2) . ' ' . $unit[$i];
 }
 
-function testSplObjectStorage($objects) {
+function testSplObjectStorage($objects): array
+{
     $storage = new \SplObjectStorage();
     $memInit = \memory_get_usage();
     $start = \microtime(true);
@@ -33,7 +35,8 @@ function testSplObjectStorage($objects) {
     ];
 }
 
-function testArray($objects) {
+function testArray($objects): array
+{
     $memInit = \memory_get_usage();
     $start = \microtime(true);
     $storage = [];
@@ -61,10 +64,9 @@ function testArray($objects) {
     ];
 }
 
-
-$iterations = 100000;
+$numOfTestObjects = 100000;
 $objects = [];
-for ($i = 0; $i < $iterations; $i++) {
+for ($i = 0; $i < $numOfTestObjects; $i++) {
     $objects[] = new \stdClass();
 }
 
@@ -78,5 +80,5 @@ foreach ($storages as $storage) {
 }
 
 foreach ($results as $storage => $result) {
-    echo \sprintf("%s test:\nTime to fill: %0.10f\nTime to check: %0.10f\nMemory usage: %s\n\n", \ucfirst($storage), $result['timeToFill'], $result['timeToCheck'], convertToBytes($result['memoryUsage']));
+    echo \sprintf("%s test\nTime to fill: %0.10f\nTime to check: %0.10f\nMemory usage: %s\n\n", \ucfirst($storage), $result['timeToFill'], $result['timeToCheck'], convertToBytes($result['memoryUsage']));
 }
